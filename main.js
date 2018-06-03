@@ -87,13 +87,17 @@ function getIndex(obj){
 
 function cellClick(e){
     [i,j]=getIndex(e.target);
-    data[i][j]=1;
+    if(data[i][j]==1){
+        data[i][j]=0;
+    }else{
+        data[i][j]=1;
+    }
     refreshTable();
 }
 function cellRClick(e){
     e.preventDefault();
     [i,j]=getIndex(e.target);
-    data[i][j]=0;
+    data[i][j]=2;
     refreshTable();
 }
 
