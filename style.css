@@ -1,0 +1,41 @@
+table {
+    border: 3px solid #000;
+    border-collapse: collapse;
+}
+th {
+    background-color: #aaa;
+}
+td {
+    border: 1px solid #000;
+    width: 30px;
+    height: 10px;
+}
+td:hover {
+    background-color: #eee;
+}
+/* 通常のノーツ */
+.note {
+    background-color: #0f0;
+}
+.note:hover {
+    background-color: #0c0;
+}
+/* ロングノーツ */
+.lnote {
+    background-color: #00f;
+}
+.lnote:hover {
+    background-color: #00c;
+}
+/* 小節数を表示する行 */
+.frame_count {
+    text-align: center;
+}
+/* 小節の始まりの行 */
+.frame_start {
+    border-top-width: 4px;
+}
+/* 拍頭の行 */
+.beat {
+    border-top-width: 2px;
+}
