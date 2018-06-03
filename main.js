@@ -153,8 +153,43 @@ function save(){
         }
     }
 
-    //画面に出力
-    window.alert(text);
+    //テキストボックスに出力
+    document.getElementById('inputtext').value=text;
+}
+
+function load(){
+    //dataをクリアする
+    data=[];
+    addFrame(4);
+
+    bpm=120; //デフォルト値
+
+    text=document.getElementById('inputtext').value; // テキストボックスから入力
+
+    lines=text.split('\n')
+    for(i=0;i<lines.length;++i){
+        if(lines[i].substr(0,4)=="#BPM" && !isNaN(lines[i].substr(5))){
+            bpm=Number(lines[i].substr(5));
+        }else if(!isNaN(lines[i].substr(1,5))){
+            bar=Number(lines[i].substr(1,3));
+            ch=Number(lines[i].substr(4,2));
+            d=[0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,4,0,0,0,0,0,0,5,6,7,8];
+            col=d[ch];
+            notestr=lines[i].substr(7);
+            unit=beatCount*beatDelta*2/notestr.length;
+            if(Number.isInteger(unit)){
+                //小節数が現在とどちらが多いか数える
+                if(bar+1>data.length/beatDelta/beatCount){
+                    addFrame(bar+1-data.length/beatDelta/beatCount);
+                }
+                for(j=0;j<notestr.length/2;++j){
+                    data[bar*beatDelta*beatCount+j*unit][col]=Number(notestr.substr(j*2,2));
+                }
+            }
+        }
+    }
+    document.getElementById('bpm').value=bpm;
+    refreshTable();
 }
 
 //画面遷移を阻止する
