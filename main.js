@@ -1,6 +1,8 @@
 const beatDelta=4;
 const beatCount=4;
 
+var LongNotesError=false;
+
 function initTable(){
     var table=document.createElement('table');
     table.id='table';
@@ -9,6 +11,8 @@ function initTable(){
 function refreshTable(){
     var rows=[];
     var table=document.getElementById('table');
+
+    searchLonNote();
 
     len=table.rows.length
     for(i=0;i<len;++i){
@@ -49,6 +53,8 @@ function refreshTable(){
                 cell.classList.add('note');
             }else if(data[i][j]==2){
                 cell.classList.add('lnote');
+            }else if(data[i][j]==3){
+                cell.classList.add('inlnote');
             }
 
             //小節制御
@@ -73,6 +79,32 @@ function refreshTable(){
             cell.rowSpan=beatCount*beatDelta;
             cell.classList.add('frame_start');
             cell.classList.add('frame_count');
+        }
+    }
+}
+function searchLonNote(){
+    LongNotesError=false;
+    for(col=0;col<9;++col){
+        inLongNote=false;
+        for(i=0;i<data.length;++i){
+            if(inLongNote){
+                if(data[i][col]==2){
+                    inLongNote=false;
+                }else if(data[i][col]==1){
+                    LongNotesError=true;
+                }else if(data[i][col]!=1){
+                    data[i][col]=3;
+                }
+            }else{
+                if(data[i][col]==2){
+                    inLongNote=true;
+                }else if(data[i][col]!=1){
+                    data[i][col]=0;
+                }
+            }
+            if(i==data.length-1 && inLongNote){
+                LongNotesError=true;
+            }
         }
     }
 }
@@ -130,6 +162,11 @@ function addFrame(n){
 }
 
 function save(){
+    if(LongNotesError){
+        window.alert('ロングノーツの配置に問題があります。\n修正してから再度操作してください。');
+        return;
+    }
+
     text='';
 
     //ヘッダー

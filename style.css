@@ -27,6 +27,12 @@ td:hover {
 .lnote:hover {
     background-color: #00c;
 }
+.inlnote {
+    background-color: #66f;
+}
+.inlnote:hover {
+    background-color: #66c;
+}
 /* 小節数を表示する行 */
 .frame_count {
     text-align: center;
