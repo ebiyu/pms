@@ -125,6 +125,38 @@ function addFrame(n){
     }
 }
 
+function save(){
+    text='';
+
+    //ヘッダー
+    text+='#PLAYER 3\n';
+    text+='#GENRE \n';
+    text+='#TITLE \n';
+    text+='#ARTIST \n';
+    text+='#BPM '+document.getElementById('bpm').value+'\n';
+    text+='#PLAYLEVEL 1\n';
+    text+='#RANK 3\n';
+    text+='#STAGEFILE \n';
+
+    //内容作成
+    notes=[];
+    for(bar=0;bar<data.length/beatCount/beatDelta;++bar){
+        for(col=0;col<9;++col){
+            ch=[11,12,13,14,15,22,23,24,25][col];
+            note=[];
+            hstr='#'+('000'+bar).slice(-3)+('00'+ch).slice(-2)+':';
+            notestr=''
+            for(i=0;i<beatCount*beatDelta;++i){
+                notestr+=('00'+data[bar*beatDelta*beatCount+i][col]).slice(-2);
+            }
+            text+=hstr+notestr+'\n';
+        }
+    }
+
+    //画面に出力
+    window.alert(text);
+}
+
 //画面遷移を阻止する
 window.onbeforeunload = function(e) {
     return 'ちょっと待ってくださいよ。まだダメですよ。';
