@@ -125,6 +125,11 @@ function addFrame(n){
     }
 }
 
+//画面遷移を阻止する
+window.onbeforeunload = function(e) {
+    return 'ちょっと待ってくださいよ。まだダメですよ。';
+};
+
 data=[]
 //4小節を追加する
 addFrame(4);
