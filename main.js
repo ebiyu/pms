@@ -171,7 +171,7 @@ function save(){
                 text+='#'+('000'+bar).slice(-3)+('00'+ch).slice(-2)+':'+notestr+'\n';
             }
             if(lnotef){
-                text+='#'+('000'+bar).slice(-3)+('00'+(ch+40)).slice(-2)+':'+notestr+'\n';
+                text+='#'+('000'+bar).slice(-3)+('00'+(ch+40)).slice(-2)+':'+lnotestr+'\n';
             }
         }
     }
