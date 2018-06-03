@@ -149,11 +149,30 @@ function save(){
             ch=[11,12,13,14,15,22,23,24,25][col];
             note=[];
             hstr='#'+('000'+bar).slice(-3)+('00'+ch).slice(-2)+':';
-            notestr=''
+            notestr='';
+            lnotestr='';
+            notef=false;
+            lnotef=false;
             for(i=0;i<beatCount*beatDelta;++i){
-                notestr+=('00'+data[bar*beatDelta*beatCount+i][col]).slice(-2);
+                if(data[bar*beatDelta*beatCount+i][col]==1){
+                    notestr+='01';
+                    notef=true;
+                }else{
+                    notestr+='00';
+                }
+                if(data[bar*beatDelta*beatCount+i][col]==2){
+                    lnotestr+='01';
+                    lnotef=true;
+                }else{
+                    lnotestr+='00';
+                }
             }
-            text+=hstr+notestr+'\n';
+            if(notef){
+                text+='#'+('000'+bar).slice(-3)+('00'+ch).slice(-2)+':'+notestr+'\n';
+            }
+            if(lnotef){
+                text+='#'+('000'+bar).slice(-3)+('00'+(ch+40)).slice(-2)+':'+notestr+'\n';
+            }
         }
     }
 
@@ -178,7 +197,13 @@ function load(){
             bar=Number(lines[i].substr(1,3));
             ch=Number(lines[i].substr(4,2));
             d=[0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,4,0,0,0,0,0,0,5,6,7,8];
-            col=d[ch];
+            if(ch>50){
+                col=d[ch-40];
+                type=2;
+            }else{
+                col=d[ch];
+                type=1;
+            }
             notestr=lines[i].substr(7);
             unit=beatCount*beatDelta*2/notestr.length;
             if(Number.isInteger(unit)){
@@ -187,7 +212,9 @@ function load(){
                     addFrame(bar+1-data.length/beatDelta/beatCount);
                 }
                 for(j=0;j<notestr.length/2;++j){
-                    data[bar*beatDelta*beatCount+j*unit][col]=Number(notestr.substr(j*2,2));
+                    if(notestr.substr(j*2,2)!='00'){
+                        data[bar*beatDelta*beatCount+j*unit][col]=type;
+                    }
                 }
             }
         }
