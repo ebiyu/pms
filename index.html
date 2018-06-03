@@ -3,15 +3,17 @@
 <head>
 <meta charset='utf-8'>
 <link rel='stylesheet' href='style.css'>
-<title>pms editor</title>
+<title>pms editor (alpha)</title>
 </head>
 <body>
-<h1>pms editor</h1>
+<h1>pms editor (alpha)</h1>
 <label>BPM:<input type='text' id='bpm' value='120'></label>
 <input type='button' value='save' id='save' onclick='save()'>
 <input type='button' value='open' id='open' onclick='load()'><br>
-<textarea id='inputtext' cols='50' rows='10'></textarea>
+<label>pmsファイル貼り付け欄<br>
+<textarea id='inputtext' cols='50' rows='10'></textarea></label>
 <div id='tablespace'></div>
 <script type='text/javascript' src='main.js'></script>
+<a href='javascript:window.open("https://github.com/ebiyuu1121/pms")'>ソースコード</a>
 </body>
 </html>
