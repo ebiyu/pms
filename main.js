@@ -55,6 +55,12 @@ function refreshTable(){
                 cell.classList.add('lnote');
             }else if(data[i][j]==3){
                 cell.classList.add('inlnote');
+            }else if(dragging && j==dragCol){
+                if(i==dragStart || i==dragEnd){
+                    cell.classList.add('lnote');
+                }else if(i>dragStart && i<dragEnd){
+                    cell.classList.add('inlnote');
+                }
             }
 
             //小節制御
@@ -67,6 +73,7 @@ function refreshTable(){
             //イベントを設定
             cell.onclick=function(e){cellClick(e);};
             cell.oncontextmenu=function(e){cellRClick(e)}
+            cell.onmousemove=function(e){cellMouseMove(e)}
         }
 
         //ボタンを追加する列
@@ -126,11 +133,33 @@ function cellClick(e){
     }
     refreshTable();
 }
+var dragStart=0;
+var dragCol=0;
+var dragEnd=0;
+var dragging=false;
 function cellRClick(e){
     e.preventDefault();
-    [i,j]=getIndex(e.target);
-    data[i][j]=2;
+    if(!dragging){
+        [i,j]=getIndex(e.target);
+        dragStart=i;
+        dragEnd=i;
+        dragCol=j;
+        dragging=true;
+    }else{
+        [i,j]=getIndex(e.target);
+        dragEnd=i;
+        data[dragStart][dragCol]=2;
+        data[i][dragCol]=2;
+        dragging=false;
+    }
     refreshTable();
+}
+function cellMouseMove(e){
+    [i,j]=getIndex(e.target);
+    if(dragging){
+        dragEnd=i;
+        refreshTable();
+    }
 }
 
 function addLine(obj){
