@@ -183,8 +183,16 @@ function cellRClick(e){
         [i,j]=getIndex(e.target);
         dragEnd=i;
         if(dragStart!=i){
-            data[dragStart][dragCol]=2;
-            data[i][dragCol]=2;
+            if(data[dragStart][dragCol]==2){
+                data[dragStart][dragCol]=0;
+            }else{
+                data[dragStart][dragCol]=2;
+            }
+            if(data[i][dragCol]==2){
+                data[i][dragCol]=0;
+            }else{
+                data[i][dragCol]=2;
+            }
             edit();
         }
         dragging=false;
