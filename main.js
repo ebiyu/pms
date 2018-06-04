@@ -97,6 +97,25 @@ function refreshTable(){
         }
     }
 }
+function checkScroll(){
+    var row=document.getElementById('table').rows[activeRow+1];
+    var pos=row.getBoundingClientRect().top;
+    var winsize=window.innerHeight;
+    var cellsize=row.offsetHeight;
+
+    const mergin=100;
+
+    console.log('loc',pos,pos+cellsize,winsize);
+
+    //画面の上にある場合
+    if(pos-mergin<0){
+        window.scrollBy(0,pos-mergin);
+    }
+    //画面の下にある場合
+    if(pos+cellsize+mergin>winsize){
+        window.scrollBy(0,pos+cellsize+mergin-winsize);
+    }
+}
 function searchLonNote(){
     LongNotesError=false;
     for(col=0;col<9;++col){
@@ -184,31 +203,35 @@ window.onkeypress=function(e){
         case 'j':
             activeRow=Math.min(data.length-1,activeRow+1);
             refreshTable();
+            checkScroll();
             break;
         case 'J':
             activeRow=Math.min(data.length-1,activeRow+bitPerBar);
             refreshTable();
+            checkScroll();
             break;
         case 'k':
             activeRow=Math.max(0,activeRow-1);
             refreshTable();
+            checkScroll();
             break;
         case 'K':
             activeRow=Math.max(0,activeRow-bitPerBar);
             refreshTable();
+            checkScroll();
             break;
         case 'Enter':
             if(e.shiftKey){
                 if(activeRow>0){
                     activeRow-=1;
-                    refreshTable();
                 }
             }else{
                 if(activeRow<data.length-1){
                     activeRow+=1;
-                    refreshTable();
                 }
             }
+            checkScroll();
+            refreshTable();
             break;
         case '1':
         case 'z':
