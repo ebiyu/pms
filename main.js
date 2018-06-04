@@ -61,7 +61,7 @@ function refreshTable(){
             }else if(dragging && j==dragCol){
                 if(i==dragStart || i==dragEnd){
                     cell.classList.add('lnote');
-                }else if(i>dragStart && i<dragEnd){
+                }else if((i>dragStart && i<dragEnd) || (i<dragStart && i>dragEnd)){
                     cell.classList.add('inlnote');
                 }
             }
