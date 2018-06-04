@@ -477,8 +477,11 @@ function load(obj){
     saved=true;
 }
 
-function keyHelp(){
-    text=['キー操作一覧', 'j / Enter 次の行へ', 'k / Shift+Enter 前の行へ', 'J 次の小節へ', 'K 前の小節へ',
+function help(){
+    text=['注意事項', '画面を閉じたり他のページに移動したりすると，保存してないデータは失われます。', '',
+    'マウス操作', '左クリック ノーツ配置', '右クリック ロングノーツ配置', '',
+    'ボタン操作', 'add 小節を追加', 'clear 小節内の音符を消去', 'delete 小節を削除', '',
+    'キー操作', 'j / Enter 次の行へ', 'k / Shift+Enter 前の行へ', 'J 次の小節へ', 'K 前の小節へ',
     's 行をクリア', 'd 小節を削除', 'o 小節を後に挿入', 'O 小節を前に挿入',
     '1/z 2/x 3/c 4/v 5/space 6/n 7/m 8/, 9/, ノーツを作成/削除'].join('\n');
     window.alert(text);
