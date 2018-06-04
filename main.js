@@ -386,8 +386,12 @@ function save(){
         }
     }
 
-    //テキストボックスに出力
-    document.getElementById('inputtext').value=text;
+    //ファイルに出力
+    var downLoadLink = document.createElement("a");
+    downLoadLink.download=document.getElementById('filename').value;
+    downLoadLink.href = URL.createObjectURL(new Blob([text], {type: "text.plain"}));
+    downLoadLink.dataset.downloadurl = ["text/plain", downLoadLink.download, downLoadLink.href].join(":");
+    downLoadLink.click();
 }
 
 function load(obj){
@@ -405,6 +409,8 @@ function load(obj){
     reader.onload=function(){
         text=reader.result;
         lines=text.split('\n');
+
+        document.getElementById('filename').value=file.name;
         for(i=0;i<lines.length;++i){
             lines[i]=lines[i].trim(); //CRの除去のため
 
