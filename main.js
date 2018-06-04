@@ -390,47 +390,59 @@ function save(){
     document.getElementById('inputtext').value=text;
 }
 
-function load(){
+function load(obj){
     //dataをクリアする
     data=[];
     addFrame(4);
 
     bpm=120; //デフォルト値
 
-    text=document.getElementById('inputtext').value; // テキストボックスから入力
+    //ファイルの読み込み
+    var file=obj.files[0];
+    var reader=new FileReader();
 
-    lines=text.split('\n')
-    for(i=0;i<lines.length;++i){
-        if(lines[i].substr(0,4)=="#BPM" && !isNaN(lines[i].substr(5))){
-            bpm=Number(lines[i].substr(5));
-        }else if(!isNaN(lines[i].substr(1,5))){
-            bar=Number(lines[i].substr(1,3));
-            ch=Number(lines[i].substr(4,2));
-            d=[0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,4,0,0,0,0,0,0,5,6,7,8];
-            if(ch>50){
-                col=d[ch-40];
-                type=2;
-            }else{
-                col=d[ch];
-                type=1;
-            }
-            notestr=lines[i].substr(7);
-            unit=bitPerBar*2/notestr.length;
-            if(Number.isInteger(unit)){
-                //小節数が現在とどちらが多いか数える
-                if(bar+1>data.length/bitPerBar){
-                    addFrame(bar+1-data.length/bitPerBar);
+    //ファイル読み込み後の処理
+    reader.onload=function(){
+        text=reader.result;
+        lines=text.split('\n');
+        for(i=0;i<lines.length;++i){
+            lines[i]=lines[i].trim(); //CRの除去のため
+
+            //ファイルを解析する
+            if(lines[i].substr(0,4)=="#BPM" && !isNaN(lines[i].substr(5))){
+                bpm=Number(lines[i].substr(5));
+            }else if(!isNaN(lines[i].substr(1,5))){
+                bar=Number(lines[i].substr(1,3));
+                ch=Number(lines[i].substr(4,2));
+                d=[0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,4,0,0,0,0,0,0,5,6,7,8];
+                if(ch>50){
+                    col=d[ch-40];
+                    type=2;
+                }else{
+                    col=d[ch];
+                    type=1;
                 }
-                for(j=0;j<notestr.length/2;++j){
-                    if(notestr.substr(j*2,2)!='00'){
-                        data[bar*bitPerBar+j*unit][col]=type;
+                notestr=lines[i].substr(7);
+                unit=bitPerBar*2/notestr.length;
+                if(Number.isInteger(unit)){
+                    //小節数が現在とどちらが多いか数える
+                    if(bar+1>data.length/bitPerBar){
+                        addFrame(bar+1-data.length/bitPerBar);
+                    }
+                    for(j=0;j<notestr.length/2;++j){
+                        if(notestr.substr(j*2,2)!='00'){
+                            data[bar*bitPerBar+j*unit][col]=type;
+                        }
                     }
                 }
             }
         }
+        document.getElementById('bpm').value=bpm;
+        refreshTable();
     }
-    document.getElementById('bpm').value=bpm;
-    refreshTable();
+
+    //ファイル読み込み実行
+    reader.readAsText(file);
 }
 
 function keyHelp(){

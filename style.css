@@ -52,3 +52,7 @@ td:hover {
 .beat {
     border-top-width: 2px;
 }
+
+#bpm {
+    width: 30px;
+}

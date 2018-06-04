@@ -8,9 +8,9 @@
 <body>
 <h1>pms editor (alpha)</h1>
 <label>BPM:<input type='text' id='bpm' value='120'></label>
-<input type='button' value='save' id='save' onclick='save()'>
-<input type='button' value='open' id='open' onclick='load()'>
-<input type='button' value='キーボード操作方法' id='help' onclick='keyHelp()'><br>
+<input type='button' value='キーボード操作方法' onclick='keyHelp()'><br>
+<label>ファイルを読み込む:<input type='file' onchange='load(this)'></label><br>
+<label>ファイルを保存する:<input type='button' value='ダウンロード' onclick='save()'></label><br>
 <label>pmsファイル貼り付け欄<br>
 <textarea id='inputtext' cols='50' rows='10'></textarea></label>
 <div id='tablespace'></div>
