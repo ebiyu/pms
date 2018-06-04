@@ -5,6 +5,8 @@ var LongNotesError=false;
 
 var activeRow=0; //選択中の行の概念
 
+var saved=true;
+
 function initTable(){
     var table=document.createElement('table');
     table.id='table';
@@ -97,6 +99,11 @@ function refreshTable(){
         }
     }
 }
+function edit(){
+    //undo関係の処理をここに書く
+
+    saved=false;
+}
 function checkScroll(){
     var row=document.getElementById('table').rows[activeRow+1];
     var pos=row.getBoundingClientRect().top;
@@ -156,6 +163,7 @@ function cellClick(e){
     }else{
         data[i][j]=1;
     }
+    edit();
     activeRow=i;
     refreshTable();
 }
@@ -177,6 +185,7 @@ function cellRClick(e){
         data[dragStart][dragCol]=2;
         data[i][dragCol]=2;
         dragging=false;
+        edit();
     }
     activeRow=i;
     refreshTable();
@@ -266,17 +275,20 @@ window.onkeypress=function(e){
             }else{
                 data[activeRow][col]=1;
             }
+            edit();
             refreshTable();
             break;
         case 'Backspace':
         case 'S':
         case 's':
             data[activeRow]=[0,0,0,0,0,0,0,0,0];
+            edit();
             refreshTable();
             break;
         case 'd':
             i=Math.floor(activeRow/bitPerBar)*bitPerBar;
             data.splice(i,bitPerBar);
+            edit();
             refreshTable();
             break;
         case 'o':
@@ -285,6 +297,7 @@ window.onkeypress=function(e){
             for(c=0;c<len;++c){
                 data.splice(i,0,[0,0,0,0,0,0,0,0,0]);
             }
+            edit();
             refreshTable();
             break;
         case 'O':
@@ -293,6 +306,7 @@ window.onkeypress=function(e){
             for(c=0;c<len;++c){
                 data.splice(i,0,[0,0,0,0,0,0,0,0,0]);
             }
+            edit();
             refreshTable();
             break;
         case 'g':
@@ -312,6 +326,7 @@ function addLine(obj){
     for(c=0;c<len;++c){
         data.splice(i,0,[0,0,0,0,0,0,0,0,0]);
     }
+    edit();
     refreshTable();
 }
 function clearLine(obj){
@@ -321,10 +336,12 @@ function clearLine(obj){
         data[i+c]=[0,0,0,0,0,0,0,0,0];
     }
     refreshTable();
+    edit();
 }
 function deleteLine(obj){
     [i,j]=getIndex(obj.parentNode);
     data.splice(i,bitPerBar);
+    edit();
     refreshTable();
 }
 
@@ -392,9 +409,14 @@ function save(){
     downLoadLink.href = URL.createObjectURL(new Blob([text], {type: "text.plain"}));
     downLoadLink.dataset.downloadurl = ["text/plain", downLoadLink.download, downLoadLink.href].join(":");
     downLoadLink.click();
+
+    saved=true;
 }
 
 function load(obj){
+    if(!saved){
+        if(!confirm('この操作を実行すると，保存されていない変更は失われます。\nよろしいですか？')) return;
+    }
     //dataをクリアする
     data=[];
     addFrame(4);
@@ -449,6 +471,10 @@ function load(obj){
 
     //ファイル読み込み実行
     reader.readAsText(file);
+
+    obj.value='';
+
+    saved=true;
 }
 
 function keyHelp(){
