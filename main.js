@@ -1,5 +1,5 @@
-const beatDelta=4;
-const beatCount=4;
+const bitPerBeat=4;
+const bitPerBar=16;
 
 var LongNotesError=false;
 
@@ -38,10 +38,10 @@ function refreshTable(){
         rows.push(table.insertRow(-1));
         
         //小説数を示す列
-        if(i%(beatCount*beatDelta)==0){
+        if(i%bitPerBar==0){
             cell=rows[i].insertCell(-1);
-            cell.innerHTML=i/(beatCount*beatDelta);
-            cell.rowSpan=beatCount*beatDelta;
+            cell.innerHTML=i/bitPerBar;
+            cell.rowSpan=bitPerBar;
             cell.classList.add('frame_start');
             cell.classList.add('frame_count');
             cell.onclick=function(e){activateRow(e);}
@@ -72,9 +72,9 @@ function refreshTable(){
             }
 
             //小節制御
-            if(i%(beatCount*beatDelta)==0){
+            if(i%bitPerBar==0){
                 cell.classList.add('frame_start');
-            }else if(i%beatDelta==0){
+            }else if(i%bitPerBeat==0){
                 cell.classList.add('beat');
             }
 
@@ -85,13 +85,13 @@ function refreshTable(){
         }
 
         //ボタンを追加する列
-        if(i%(beatCount*beatDelta)==0){
+        if(i%bitPerBar==0){
             cell=rows[i].insertCell(-1);
             cell.innerHTML=
                 "<input type='button' onclick='addLine(this)' value='add'><br>"
                 +"<input type='button' onclick='clearLine(this)' value='clear'>"
                 +"<input type='button' onclick='deleteLine(this)' value='delete'>"
-            cell.rowSpan=beatCount*beatDelta;
+            cell.rowSpan=bitPerBar;
             cell.classList.add('frame_start');
             cell.classList.add('frame_count');
         }
@@ -258,7 +258,7 @@ window.onkeypress=function(e){
 
 function addLine(obj){
     [i,j]=getIndex(obj.parentNode);
-    len=beatDelta*beatCount;
+    len=bitPerBar;
     for(c=0;c<len;++c){
         data.splice(i,0,[0,0,0,0,0,0,0,0,0]);
     }
@@ -266,7 +266,7 @@ function addLine(obj){
 }
 function clearLine(obj){
     [i,j]=getIndex(obj.parentNode);
-    len=beatDelta*beatCount;
+    len=bitPerBar;
     for(c=0;c<len;++c){
         data[i+c]=[0,0,0,0,0,0,0,0,0];
     }
@@ -274,12 +274,12 @@ function clearLine(obj){
 }
 function deleteLine(obj){
     [i,j]=getIndex(obj.parentNode);
-    data.splice(i,beatDelta*beatCount);
+    data.splice(i,bitPerBar);
     refreshTable();
 }
 
 function addFrame(n){
-    for(i=0;i<n*beatDelta*beatCount;++i){
+    for(i=0;i<n*bitPerBar;++i){
         data.push([0,0,0,0,0,0,0,0,0]);
     }
 }
@@ -304,7 +304,7 @@ function save(){
 
     //内容作成
     notes=[];
-    for(bar=0;bar<data.length/beatCount/beatDelta;++bar){
+    for(bar=0;bar<data.length/bitPerBar;++bar){
         for(col=0;col<9;++col){
             ch=[11,12,13,14,15,22,23,24,25][col];
             note=[];
@@ -313,14 +313,14 @@ function save(){
             lnotestr='';
             notef=false;
             lnotef=false;
-            for(i=0;i<beatCount*beatDelta;++i){
-                if(data[bar*beatDelta*beatCount+i][col]==1){
+            for(i=0;i<bitPerBar;++i){
+                if(data[bar*bitPerBar+i][col]==1){
                     notestr+='01';
                     notef=true;
                 }else{
                     notestr+='00';
                 }
-                if(data[bar*beatDelta*beatCount+i][col]==2){
+                if(data[bar*bitPerBar+i][col]==2){
                     lnotestr+='01';
                     lnotef=true;
                 }else{
@@ -365,15 +365,15 @@ function load(){
                 type=1;
             }
             notestr=lines[i].substr(7);
-            unit=beatCount*beatDelta*2/notestr.length;
+            unit=bitPerBar*2/notestr.length;
             if(Number.isInteger(unit)){
                 //小節数が現在とどちらが多いか数える
-                if(bar+1>data.length/beatDelta/beatCount){
-                    addFrame(bar+1-data.length/beatDelta/beatCount);
+                if(bar+1>data.length/bitPerBar){
+                    addFrame(bar+1-data.length/bitPerBar);
                 }
                 for(j=0;j<notestr.length/2;++j){
                     if(notestr.substr(j*2,2)!='00'){
-                        data[bar*beatDelta*beatCount+j*unit][col]=type;
+                        data[bar*bitPerBar+j*unit][col]=type;
                     }
                 }
             }
