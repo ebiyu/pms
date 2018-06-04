@@ -105,8 +105,6 @@ function checkScroll(){
 
     const mergin=100;
 
-    console.log('loc',pos,pos+cellsize,winsize);
-
     //画面の上にある場合
     if(pos-mergin<0){
         window.scrollBy(0,pos-mergin);
@@ -306,8 +304,6 @@ window.onkeypress=function(e){
             refreshTable();
             break;
     }
-    console.log(e.keyCode);
-    console.log(e.key);
 }
 
 function addLine(obj){
