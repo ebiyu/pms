@@ -182,10 +182,12 @@ function cellRClick(e){
     }else{
         [i,j]=getIndex(e.target);
         dragEnd=i;
-        data[dragStart][dragCol]=2;
-        data[i][dragCol]=2;
+        if(dragStart!=i){
+            data[dragStart][dragCol]=2;
+            data[i][dragCol]=2;
+            edit();
+        }
         dragging=false;
-        edit();
     }
     activeRow=i;
     refreshTable();
