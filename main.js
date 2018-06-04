@@ -139,6 +139,7 @@ function cellClick(e){
     }else{
         data[i][j]=1;
     }
+    activeRow=i;
     refreshTable();
 }
 var dragStart=0;
@@ -160,6 +161,7 @@ function cellRClick(e){
         data[i][dragCol]=2;
         dragging=false;
     }
+    activeRow=i;
     refreshTable();
 }
 function cellMouseMove(e){
