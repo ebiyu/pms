@@ -322,10 +322,12 @@ window.onkeypress=function(e){
         case 'g':
             activeRow=0;
             refreshTable();
+            checkScroll();
             break;
         case 'G':
             activeRow=data.length-1;
             refreshTable();
+            checkScroll();
             break;
     }
 }
