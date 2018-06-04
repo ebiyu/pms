@@ -433,6 +433,13 @@ function load(){
     refreshTable();
 }
 
+function keyHelp(){
+    text=['キー操作一覧', 'j / Enter 次の行へ', 'k / Shift+Enter 前の行へ', 'J 次の小節へ', 'K 前の小節へ',
+    's 行をクリア', 'd 小節を削除', 'o 小節を後に挿入', 'O 小節を前に挿入',
+    '1/z 2/x 3/c 4/v 5/space 6/n 7/m 8/, 9/, ノーツを作成/削除'].join('\n');
+    window.alert(text);
+}
+
 //画面遷移を阻止する
 window.onbeforeunload = function(e) {
     return 'ちょっと待ってくださいよ。まだダメですよ。';
