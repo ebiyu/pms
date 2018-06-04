@@ -180,18 +180,20 @@ window.onkeypress=function(e){
     col=-1;
     switch(e.key){
         case 'j':
+            activeRow=Math.min(data.length-1,activeRow+1);
+            refreshTable();
+            break;
         case 'J':
-            if(activeRow<data.length-1){
-                activeRow+=1;
-                refreshTable();
-            }
+            activeRow=Math.min(data.length-1,activeRow+bitPerBar);
+            refreshTable();
             break;
         case 'k':
+            activeRow=Math.max(0,activeRow-1);
+            refreshTable();
+            break;
         case 'K':
-            if(activeRow>0){
-                activeRow-=1;
-                refreshTable();
-            }
+            activeRow=Math.max(0,activeRow-bitPerBar);
+            refreshTable();
             break;
         case 'Enter':
             if(e.shiftKey){
@@ -250,7 +252,34 @@ window.onkeypress=function(e){
             refreshTable();
             break;
         case 'd':
-
+            i=Math.floor(activeRow/bitPerBar)*bitPerBar;
+            data.splice(i,bitPerBar);
+            refreshTable();
+            break;
+        case 'o':
+            i=Math.floor(activeRow/bitPerBar+1)*bitPerBar;
+            len=bitPerBar;
+            for(c=0;c<len;++c){
+                data.splice(i,0,[0,0,0,0,0,0,0,0,0]);
+            }
+            refreshTable();
+            break;
+        case 'O':
+            i=Math.floor(activeRow/bitPerBar)*bitPerBar;
+            len=bitPerBar;
+            for(c=0;c<len;++c){
+                data.splice(i,0,[0,0,0,0,0,0,0,0,0]);
+            }
+            refreshTable();
+            break;
+        case 'g':
+            activeRow=0;
+            refreshTable();
+            break;
+        case 'G':
+            activeRow=data.length-1;
+            refreshTable();
+            break;
     }
     console.log(e.keyCode);
     console.log(e.key);
