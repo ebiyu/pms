@@ -13,6 +13,10 @@ td {
 td:hover {
     background-color: #eee;
 }
+.active{
+    background-color: #bbb;
+}
+
 /* 通常のノーツ */
 .note {
     background-color: #0f0;
@@ -20,6 +24,8 @@ td:hover {
 .note:hover {
     background-color: #0c0;
 }
+
+
 /* ロングノーツ */
 .lnote {
     background-color: #00f;
@@ -33,6 +39,7 @@ td:hover {
 .inlnote:hover {
     background-color: #66c;
 }
+
 /* 小節数を表示する行 */
 .frame_count {
     text-align: center;

@@ -3,6 +3,8 @@ const beatCount=4;
 
 var LongNotesError=false;
 
+var activeRow=0; //選択中の行の概念
+
 function initTable(){
     var table=document.createElement('table');
     table.id='table';
@@ -42,6 +44,7 @@ function refreshTable(){
             cell.rowSpan=beatCount*beatDelta;
             cell.classList.add('frame_start');
             cell.classList.add('frame_count');
+            cell.onclick=function(e){activateRow(e);}
         }
 
         //ノーツの列の作成
@@ -61,6 +64,11 @@ function refreshTable(){
                 }else if(i>dragStart && i<dragEnd){
                     cell.classList.add('inlnote');
                 }
+            }
+
+            //アクティブ行の判定
+            if(i==activeRow){
+                cell.classList.add('active');
             }
 
             //小節制御
@@ -160,6 +168,92 @@ function cellMouseMove(e){
         dragEnd=i;
         refreshTable();
     }
+}
+
+function activateRow(e){
+    [i,j]=getIndex(e.target);
+    activeRow=i;
+    refreshTable();
+}
+
+window.onkeypress=function(e){
+    col=-1;
+    switch(e.key){
+        case 'j':
+        case 'J':
+            if(activeRow<data.length-1){
+                activeRow+=1;
+                refreshTable();
+            }
+            break;
+        case 'k':
+        case 'K':
+            if(activeRow>0){
+                activeRow-=1;
+                refreshTable();
+            }
+            break;
+        case 'Enter':
+            if(e.shiftKey){
+                if(activeRow>0){
+                    activeRow-=1;
+                    refreshTable();
+                }
+            }else{
+                if(activeRow<data.length-1){
+                    activeRow+=1;
+                    refreshTable();
+                }
+            }
+            break;
+        case '1':
+        case 'z':
+            if(col==-1) col=0;
+        case '2':
+        case 'x':
+            if(col==-1) col=1;
+        case '3':
+        case 'c':
+            if(col==-1) col=2;
+        case '4':
+        case 'v':
+            if(col==-1) col=3;
+        case '5':
+        case ' ':
+            if(col==-1){
+                col=4;
+                e.preventDefault();
+            }
+        case '6':
+        case 'n':
+            if(col==-1) col=5;
+        case '7':
+        case 'm':
+            if(col==-1) col=6;
+        case '8':
+        case ',':
+            if(col==-1) col=7;
+        case '9':
+        case '.':
+            if(col==-1) col=8;
+            if(data[activeRow][col]==1){
+                data[activeRow][col]=0;
+            }else{
+                data[activeRow][col]=1;
+            }
+            refreshTable();
+            break;
+        case 'Backspace':
+        case 'S':
+        case 's':
+            data[activeRow]=[0,0,0,0,0,0,0,0,0];
+            refreshTable();
+            break;
+        case 'd':
+
+    }
+    console.log(e.keyCode);
+    console.log(e.key);
 }
 
 function addLine(obj){
